@@ -1,13 +1,17 @@
+"""Literal search and label assignment for tmux copy-mode content."""
+
 from __future__ import annotations
 
-from dataclasses import dataclass
+import dataclasses
 
 
 LABEL_ALPHABET = "tnseriaogmplfuwyqbjdhvkzxc"
 
 
-@dataclass(frozen=True)
+@dataclasses.dataclass(frozen=True)
 class Match:
+    """A visible text match in captured tmux pane content."""
+
     row: int
     col: int
     text: str
@@ -15,10 +19,22 @@ class Match:
 
 
 def is_case_sensitive(query: str) -> bool:
+    """Returns whether query should use case-sensitive matching."""
+
     return any(char.isupper() for char in query)
 
 
 def find_literal_matches(lines: list[str], query: str) -> list[Match]:
+    """Finds literal substring matches in top-to-bottom display order.
+
+    Args:
+      lines: Visible pane lines.
+      query: Literal query string.
+
+    Returns:
+      Matches in row-major order. Overlapping matches are preserved.
+    """
+
     if not query:
         return []
 
@@ -40,6 +56,17 @@ def find_literal_matches(lines: list[str], query: str) -> list[Match]:
 
 
 def label_conflicts(lines: list[str], matches: list[Match], query: str) -> set[str]:
+    """Finds label characters that would conflict with query continuation.
+
+    Args:
+      lines: Visible pane lines.
+      matches: Current query matches.
+      query: Literal query string.
+
+    Returns:
+      Label characters to avoid for the current query.
+    """
+
     case_sensitive = is_case_sensitive(query)
     conflicts: set[str] = set()
     offset = len(query)
@@ -62,16 +89,40 @@ def assign_labels(
     query: str,
     alphabet: str = LABEL_ALPHABET,
 ) -> list[Match]:
+    """Assigns non-conflicting labels to matches.
+
+    Args:
+      lines: Visible pane lines.
+      matches: Current query matches.
+      query: Literal query string.
+      alphabet: Candidate label characters in assignment order.
+
+    Returns:
+      Labelled matches, truncated when labels run out.
+    """
+
     conflicts = label_conflicts(lines, matches, query)
     available = [label for label in alphabet if label not in conflicts]
     labelled: list[Match] = []
 
     for match, label in zip(matches, available):
-        labelled.append(Match(row=match.row, col=match.col, text=match.text, label=label))
+        labelled.append(
+            Match(row=match.row, col=match.col, text=match.text, label=label)
+        )
 
     return labelled
 
 
 def search(lines: list[str], query: str, alphabet: str = LABEL_ALPHABET) -> list[Match]:
-    return assign_labels(lines, find_literal_matches(lines, query), query, alphabet)
+    """Finds matches and assigns jump labels.
 
+    Args:
+      lines: Visible pane lines.
+      query: Literal query string.
+      alphabet: Candidate label characters in assignment order.
+
+    Returns:
+      Labelled matches in jump order.
+    """
+
+    return assign_labels(lines, find_literal_matches(lines, query), query, alphabet)

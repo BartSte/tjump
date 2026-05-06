@@ -104,10 +104,49 @@ Options:
 -h, --help       show help
 -p, --pane PANE  target tmux pane
 --popup POPUP    internal popup state file
+--config CONFIG  path to a tjump TOML config file
 ```
 
 Normal use should go through the tmux binding. `--popup` is an internal mode
 used after `tjump` captures pane state and launches the full-pane popup.
+
+## Configuration
+
+`tjump` reads configuration from:
+
+```text
+${XDG_CONFIG_HOME:-~/.config}/tjump/config.toml
+```
+
+You can also point at a specific file:
+
+```sh
+bin/tjump --config ~/.config/tjump/config.toml --pane '#{pane_id}'
+```
+
+Example:
+
+```toml
+label_alphabet = "tnseriaogmplfuwyqbjdhvkzxc"
+prompt = "tjump"
+show_match_count = true
+
+# ANSI SGR styles.
+label_style = "1;30;42"
+match_style = "30;43"
+status_style = "7"
+```
+
+Settings:
+
+| Setting | Default | Meaning |
+| --- | --- | --- |
+| `label_alphabet` | `tnseriaogmplfuwyqbjdhvkzxc` | Label keys, in assignment order |
+| `prompt` | `tjump` | Status-line prompt |
+| `show_match_count` | `true` | Show match count after the query |
+| `label_style` | `1;30;42` | ANSI SGR style for the label character |
+| `match_style` | `30;43` | ANSI SGR style for the rest of a match |
+| `status_style` | `7` | ANSI SGR style for the status line |
 
 ## Development
 
