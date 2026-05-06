@@ -17,10 +17,10 @@ The tool should behave like the user's `nvim-jump` workflow where practical.
 ## Repository Layout
 
 - `bin/tjump`: executable tmux entrypoint.
-- `tjump/search.py`: literal substring search, smartcase, and label assignment.
-- `tjump/ui.py`: full-pane popup UI, incremental input, highlighting, labels,
+- `src/tjump/search.py`: literal substring search, smartcase, and label assignment.
+- `src/tjump/ui.py`: full-pane popup UI, incremental input, highlighting, labels,
   backspace, enter, and cancel handling.
-- `tjump/tmux.py`: tmux capture, pane state, popup launch, and copy cursor movement.
+- `src/tjump/tmux.py`: tmux capture, pane state, popup launch, and copy cursor movement.
 - `tjump.tmux`: plugin-style tmux loader binding `h` in `copy-mode-vi`.
 - `tests/`: focused unit tests for search behavior.
 
@@ -62,8 +62,8 @@ Dotfiles wiring lives outside this repo:
 Run from this repo:
 
 ```sh
-python3 -m pytest
-python3 -m compileall tjump
+uv run pytest
+uv run python -m compileall src/tjump
 bin/tjump --help
 ```
 

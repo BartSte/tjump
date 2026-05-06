@@ -2,5 +2,4 @@
 set -euo pipefail
 
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PYTHONPATH="$root${PYTHONPATH:+:$PYTHONPATH}" exec python3 -m tjump.ui "$@"
-
+PYTHONPATH="$root/src${PYTHONPATH:+:$PYTHONPATH}" exec python3 -m tjump.ui "$@"

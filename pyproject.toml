@@ -1,0 +1,27 @@
+[project]
+name = "tjump"
+dynamic = ["version"]
+description = "Jump to visible text in tmux copy-mode"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+dependencies = []
+
+[project.scripts]
+tjump = "tjump.ui:main"
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["hatchling>=1.28", "hatch-vcs>=0.5"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tjump"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

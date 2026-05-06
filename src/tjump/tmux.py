@@ -4,12 +4,13 @@ import json
 import os
 import shlex
 import subprocess
+import sys
 import tempfile
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 
 
 @dataclass(frozen=True)
@@ -70,7 +71,14 @@ def load_state(path: str) -> PaneState:
 
 def launch_popup(pane_id: str) -> None:
     state_path = write_state(read_pane_state(pane_id))
-    command = f"{shlex.quote(str(ROOT / 'bin' / 'tjump'))} --popup {shlex.quote(state_path)}"
+    src = ROOT / "src"
+    python = shlex.quote(sys.executable)
+    popup = shlex.quote(state_path)
+    if src.is_dir():
+        pythonpath = shlex.quote(str(src))
+        command = f"PYTHONPATH={pythonpath}${{PYTHONPATH:+:$PYTHONPATH}} {python} -m tjump.ui --popup {popup}"
+    else:
+        command = f"{python} -m tjump.ui --popup {popup}"
     tmux(
         "display-popup",
         "-E",
@@ -96,4 +104,3 @@ def move_copy_cursor(pane_id: str, from_x: int, from_y: int, to_x: int, to_y: in
     if dx:
         command = "cursor-right" if dx > 0 else "cursor-left"
         tmux("send-keys", "-t", pane_id, "-N", str(abs(dx)), "-X", command)
-
