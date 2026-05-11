@@ -16,18 +16,15 @@ The tool should behave like the user's `nvim-jump` workflow where practical.
 
 ## Repository Layout
 
-- `bin/tjump`: executable tmux entrypoint.
 - `src/tjump/search.py`: literal substring search, smartcase, and label assignment.
 - `src/tjump/ui.py`: full-pane popup UI, incremental input, highlighting, labels,
   backspace, enter, and cancel handling.
 - `src/tjump/tmux.py`: tmux capture, pane state, popup launch, and copy cursor movement.
-- `tjump.tmux`: plugin-style tmux loader binding `h` in `copy-mode-vi`.
+- The tmux binding is documented in `README.md` instead of shipped as a loader file.
 - `tests/`: focused unit tests for search behavior.
 
-Dotfiles wiring lives outside this repo:
-
-- `~/dotfiles-linux/tmux/jump.conf` sources `~/code/personal/tjump/tjump.tmux`.
-- `~/.tmux.conf` should source `jump.conf`, not `easy-motion.conf`.
+Dotfiles wiring lives outside this repo. `~/.tmux.conf` should source the user's
+dotfiles jump config, not `easy-motion.conf`.
 
 ## Behavior Requirements
 
@@ -64,7 +61,7 @@ Run from this repo:
 ```sh
 uv run pytest
 uv run python -m compileall src/tjump
-bin/tjump --help
+uv run tjump --help
 ```
 
 For tmux wiring:

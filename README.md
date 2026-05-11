@@ -21,10 +21,16 @@ It does not select, yank, paste, or leave copy-mode.
 
 ## Installation
 
-Clone the repo somewhere stable, then source `tjump.tmux` from your tmux config:
+Clone the repo somewhere stable, then install the development environment:
+
+```sh
+uv sync
+```
+
+Bind `tjump` from your tmux config:
 
 ```tmux
-source-file ~/code/personal/tjump/tjump.tmux
+bind -T copy-mode-vi h run-shell -b "uv run --project $HOME/code/personal/python/tjump tjump --pane '#{pane_id}'"
 ```
 
 Reload tmux:
@@ -33,19 +39,7 @@ Reload tmux:
 tmux source-file ~/.tmux.conf
 ```
 
-The provided tmux plugin file binds `h` in the `copy-mode-vi` key table:
-
-```tmux
-bind -T copy-mode-vi h run-shell -b "$HOME/code/personal/tjump/bin/tjump --pane '#{pane_id}'"
-```
-
-If the repo lives somewhere else, update that path in `tjump.tmux`.
-
-Install the development environment with:
-
-```sh
-uv sync
-```
+If the repo lives somewhere else, update the `--project` path in the binding.
 
 ## Usage
 
@@ -89,12 +83,6 @@ choosing a label.
 ## CLI
 
 ```sh
-bin/tjump --pane '#{pane_id}'
-```
-
-After `uv sync`, the packaged console command is also available through:
-
-```sh
 uv run tjump --pane '#{pane_id}'
 ```
 
@@ -121,7 +109,7 @@ ${XDG_CONFIG_HOME:-~/.config}/tjump/config.toml
 You can also point at a specific file:
 
 ```sh
-bin/tjump --config ~/.config/tjump/config.toml --pane '#{pane_id}'
+uv run tjump --config ~/.config/tjump/config.toml --pane '#{pane_id}'
 ```
 
 Example:
@@ -155,7 +143,7 @@ Run the checks from this repo:
 ```sh
 uv run pytest
 uv run python -m compileall src/tjump
-bin/tjump --help
+uv run tjump --help
 ```
 
 Check tmux wiring with:
@@ -176,10 +164,8 @@ Useful manual checks:
 ## Layout
 
 ```text
-bin/tjump            executable entrypoint used by the tmux binding
 src/tjump/search.py  literal search, smartcase, and label assignment
 src/tjump/ui.py      popup UI, incremental input, rendering, and key handling
 src/tjump/tmux.py    tmux capture, popup launch, and copy cursor movement
-tjump.tmux          tmux loader and copy-mode binding
 tests/              unit tests for search behavior
 ```
