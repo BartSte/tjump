@@ -23,7 +23,9 @@ def clipped_lines(state: tmux.PaneState) -> list[str]:
     return state.lines[: max(0, state.pane_height - 1)]
 
 
-def label_map(matches: list[tjump_search.Match]) -> dict[str, tjump_search.Match]:
+def label_map(
+    matches: list[tjump_search.Match],
+) -> dict[str, tjump_search.Match]:
     """Maps assigned label keys to matches."""
 
     return {match.label: match for match in matches if match.label}
@@ -43,7 +45,9 @@ def iter_keypresses() -> Iterator[str]:
         if char == "\x1b":
             extra = ""
             while True:
-                rlist, _, _ = __import__("select").select([sys.stdin], [], [], 0.01)
+                rlist, _, _ = __import__("select").select(
+                    [sys.stdin], [], [], 0.01
+                )
                 if not rlist:
                     break
                 extra += sys.stdin.read(1)
@@ -90,7 +94,9 @@ def overlay_line(
         if match.label and visible:
             chunks.append(f"\x1b[{settings.label_style}m{match.label}\x1b[0m")
             if len(visible) > 1:
-                chunks.append(f"\x1b[{settings.match_style}m{visible[1:]}\x1b[0m")
+                chunks.append(
+                    f"\x1b[{settings.match_style}m{visible[1:]}\x1b[0m"
+                )
         elif visible:
             chunks.append(f"\x1b[{settings.match_style}m{visible}\x1b[0m")
         index = end
@@ -166,7 +172,7 @@ def run_popup(state_path: str, config: str | None = None) -> int:
             for key in iter_keypresses():
                 labels = label_map(matches)
                 if key in ("\x03", "\x1b"):
-                    return 130
+                    return 0
                 if key in ("\r", "\n"):
                     if matches:
                         choose_match(state, matches[0])

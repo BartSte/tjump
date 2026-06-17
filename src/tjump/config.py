@@ -170,7 +170,9 @@ def validate_label_alphabet(value: str) -> str:
     if not value:
         raise ValueError("label_alphabet must not be empty")
     if any(len(char.encode("utf-8")) != 1 for char in value):
-        raise ValueError("label_alphabet must contain only single-byte characters")
+        raise ValueError(
+            "label_alphabet must contain only single-byte characters"
+        )
     if any(not char.isprintable() or char.isspace() for char in value):
         raise ValueError(
             "label_alphabet must contain only printable non-space characters"
@@ -199,10 +201,14 @@ def validate_sgr_style(name: str, value: str) -> str:
     parts = value.split(";")
     for part in parts:
         if not part.isdigit():
-            raise ValueError(f"{name} must be semicolon-separated ANSI SGR numbers")
+            raise ValueError(
+                f"{name} must be semicolon-separated ANSI SGR numbers"
+            )
         number = int(part)
         if number < 0 or number > 107:
-            raise ValueError(f"{name} contains unsupported ANSI SGR number: {number}")
+            raise ValueError(
+                f"{name} contains unsupported ANSI SGR number: {number}"
+            )
     return value
 
 

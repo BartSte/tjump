@@ -13,7 +13,10 @@ dependencies = [
 tjump = "tjump.ui:main"
 
 [dependency-groups]
-dev = ["pytest>=8"]
+dev = [
+    "pre-commit>=4.3",
+    "pytest>=8",
+]
 
 [build-system]
 requires = ["hatchling>=1.28", "hatch-vcs>=0.5"]

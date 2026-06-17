@@ -49,13 +49,17 @@ def find_literal_matches(lines: list[str], query: str) -> list[Match]:
             col = haystack.find(needle, start)
             if col == -1:
                 break
-            matches.append(Match(row=row, col=col, text=line[col : col + len(query)]))
+            matches.append(
+                Match(row=row, col=col, text=line[col : col + len(query)])
+            )
             start = col + 1
 
     return matches
 
 
-def label_conflicts(lines: list[str], matches: list[Match], query: str) -> set[str]:
+def label_conflicts(
+    lines: list[str], matches: list[Match], query: str
+) -> set[str]:
     """Finds label characters that would conflict with query continuation.
 
     Args:
@@ -113,7 +117,9 @@ def assign_labels(
     return labelled
 
 
-def search(lines: list[str], query: str, alphabet: str = LABEL_ALPHABET) -> list[Match]:
+def search(
+    lines: list[str], query: str, alphabet: str = LABEL_ALPHABET
+) -> list[Match]:
     """Finds matches and assigns jump labels.
 
     Args:
@@ -125,4 +131,6 @@ def search(lines: list[str], query: str, alphabet: str = LABEL_ALPHABET) -> list
       Labelled matches in jump order.
     """
 
-    return assign_labels(lines, find_literal_matches(lines, query), query, alphabet)
+    return assign_labels(
+        lines, find_literal_matches(lines, query), query, alphabet
+    )

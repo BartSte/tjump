@@ -1,0 +1,22 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.8
+    hooks:
+      - id: ruff-format
+
+  - repo: https://github.com/PyCQA/autoflake
+    rev: v2.3.3
+
+    hooks:
+      - id: autoflake
+
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.11.21
+    hooks:
+      - id: uv-lock
+
+  - repo: https://github.com/BartSte/pre-commit-hooks
+    rev: v1.1.4
+    hooks:
+      - id: run-third-party-license-generator
+        args: [-g]

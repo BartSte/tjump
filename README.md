@@ -30,16 +30,8 @@ uv sync
 Bind `tjump` from your tmux config:
 
 ```tmux
-bind -T copy-mode-vi h run-shell -b "uv run --project $HOME/code/personal/python/tjump tjump --pane '#{pane_id}'"
+bind -T copy-mode-vi h run-shell -b "tjump --pane '#{pane_id}'"
 ```
-
-Reload tmux:
-
-```sh
-tmux source-file ~/.tmux.conf
-```
-
-If the repo lives somewhere else, update the `--project` path in the binding.
 
 ## Usage
 
@@ -51,14 +43,14 @@ move the copy-mode cursor to that match.
 
 Keys inside the popup:
 
-| Key | Action |
-| --- | --- |
-| Printable character | Extend the query |
-| `Backspace` | Delete the last query character |
-| Label key | Jump to that labelled match |
-| `Enter` | Jump to the first labelled match |
-| `Esc` | Cancel |
-| `Ctrl-c` | Cancel |
+| Key                 | Action                           |
+| ------------------- | -------------------------------- |
+| Printable character | Extend the query                 |
+| `Backspace`         | Delete the last query character  |
+| Label key           | Jump to that labelled match      |
+| `Enter`             | Jump to the first labelled match |
+| `Esc`               | Cancel                           |
+| `Ctrl-c`            | Cancel                           |
 
 ## Search Behavior
 
@@ -127,14 +119,14 @@ status_style = "7"
 
 Settings:
 
-| Setting | Default | Meaning |
-| --- | --- | --- |
-| `label_alphabet` | `tnseriaogmplfuwyqbjdhvkzxc` | Label keys, in assignment order |
-| `prompt` | `tjump` | Status-line prompt |
-| `show_match_count` | `true` | Show match count after the query |
-| `label_style` | `1;30;42` | ANSI SGR style for the label character |
-| `match_style` | `30;43` | ANSI SGR style for the rest of a match |
-| `status_style` | `7` | ANSI SGR style for the status line |
+| Setting            | Default                      | Meaning                                |
+| ------------------ | ---------------------------- | -------------------------------------- |
+| `label_alphabet`   | `tnseriaogmplfuwyqbjdhvkzxc` | Label keys, in assignment order        |
+| `prompt`           | `tjump`                      | Status-line prompt                     |
+| `show_match_count` | `true`                       | Show match count after the query       |
+| `label_style`      | `1;30;42`                    | ANSI SGR style for the label character |
+| `match_style`      | `30;43`                      | ANSI SGR style for the rest of a match |
+| `status_style`     | `7`                          | ANSI SGR style for the status line     |
 
 ## Development
 
@@ -144,6 +136,13 @@ Run the checks from this repo:
 uv run pytest
 uv run python -m compileall src/tjump
 uv run tjump --help
+```
+
+Install and run the pre-commit hooks with:
+
+```sh
+uv run pre-commit install
+uv run pre-commit run --all-files
 ```
 
 Check tmux wiring with:

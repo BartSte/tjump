@@ -103,7 +103,8 @@ def launch_popup(pane_id: str, config: str | None = None) -> None:
       config: Optional config file path to pass to the popup process.
     """
 
-    state_path = write_state(read_pane_state(pane_id))
+    state = read_pane_state(pane_id)
+    state_path = write_state(state)
     src = ROOT / "src"
     python = shlex.quote(sys.executable)
     popup = shlex.quote(state_path)
@@ -121,9 +122,13 @@ def launch_popup(pane_id: str, config: str | None = None) -> None:
         "-E",
         "-B",
         "-w",
-        "100%",
+        str(state.pane_width),
         "-h",
-        "100%",
+        str(state.pane_height),
+        "-x",
+        "#{popup_pane_left}",
+        "-y",
+        "#{popup_pane_top}",
         "-t",
         pane_id,
         command,

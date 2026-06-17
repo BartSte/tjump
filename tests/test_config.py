@@ -17,7 +17,9 @@ def test_missing_config_uses_defaults(tmp_path: pathlib.Path) -> None:
     assert settings == config.Settings()
 
 
-def test_config_file_can_override_common_settings(tmp_path: pathlib.Path) -> None:
+def test_config_file_can_override_common_settings(
+    tmp_path: pathlib.Path,
+) -> None:
     """A TOML config file should override user-facing settings."""
 
     path = tmp_path / "config.toml"

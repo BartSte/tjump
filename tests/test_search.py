@@ -55,11 +55,17 @@ def test_label_conflicts_avoid_possible_query_continuations() -> None:
     lines = ["theta there then"]
     matches = tjump_search.find_literal_matches(lines, "the")
 
-    assert tjump_search.label_conflicts(lines, matches, "the") == {"t", "r", "n"}
+    assert tjump_search.label_conflicts(lines, matches, "the") == {
+        "t",
+        "r",
+        "n",
+    }
     assert labels(tjump_search.search(lines, "the"))[:3] == ["s", "e", "i"]
 
 
-def test_enter_first_match_ordering_is_top_to_bottom_then_left_to_right() -> None:
+def test_enter_first_match_ordering_is_top_to_bottom_then_left_to_right() -> (
+    None
+):
     """The first labelled match should be top-to-bottom, then left-to-right."""
 
     matches = tjump_search.search(["xx needle", "needle later"], "needle")
